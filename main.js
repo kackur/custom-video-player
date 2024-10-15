@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Lägga till iframe i spelarelementet med allowfullscreen och tillåtna egenskaper
-  playerElement.innerHTML = `<iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>`;
+  playerElement.innerHTML = `<iframe id="videoIframe" src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>`;
 
   // Plyr-initialisering
   const player = new Plyr('#player iframe', {
@@ -34,5 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   player.on('exitfullscreen', () => {
     console.log('Player exited fullscreen');
+  });
+
+  // Fånga klick på YouTube-loggan och öppna länken externt
+  const iframe = document.getElementById('videoIframe');
+
+  iframe.addEventListener('load', () => {
+    const iframeWindow = iframe.contentWindow;
+
+    iframeWindow.document.addEventListener('click', function(event) {
+      const clickedElement = event.target;
+
+      // Kontrollera om det är en länk till YouTube-loggan
+      if (clickedElement.tagName === 'A' && clickedElement.href.includes('youtube.com')) {
+        event.preventDefault(); // Förhindra att länken öppnas i appen
+        window.open(clickedElement.href, '_blank'); // Öppna länken i en ny flik
+      }
+    });
   });
 });
