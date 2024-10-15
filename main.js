@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     videoSrc = `https://player.vimeo.com/video/${videoId}?dnt=1&title=0&byline=0&portrait=0`;
   }
 
-  // Lägga till iframe i spelarelementet
-  playerElement.innerHTML = `<iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+  // Lägga till iframe i spelarelementet med allowfullscreen och tillåtna egenskaper
+  playerElement.innerHTML = `<iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>`;
 
   // Plyr-initialisering
   const player = new Plyr('#player iframe', {
@@ -26,4 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event-listeners
   player.on('play', () => console.log('Playing'));
   player.on('pause', () => console.log('Paused'));
+
+  // Fullskärms event-listeners
+  player.on('enterfullscreen', () => {
+    console.log('Player entered fullscreen');
+  });
+
+  player.on('exitfullscreen', () => {
+    console.log('Player exited fullscreen');
+  });
 });
