@@ -23,3 +23,24 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 120px; /* Anpassa för att täcka YouTube-loggan */
+  height: 40px; /* Justera höjden baserat på loggans storlek */
+  background: rgba(255, 255, 255, 0); /* Transparent */
+  cursor: pointer;
+}
