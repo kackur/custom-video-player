@@ -41,6 +41,6 @@ body {
   right: 0;
   width: 120px; /* Anpassa för att täcka YouTube-loggan */
   height: 40px; /* Justera höjden baserat på loggans storlek */
-  background: rgba(255, 255, 255, 0); /* Transparent */
+  background: rgba(255, 255, 255, 100); /* Transparent */
   cursor: pointer;
 }
