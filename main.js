@@ -6,15 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const videoType = urlParams.get('type'); // 'youtube' eller 'vimeo'
   const videoId = urlParams.get('video'); // ID på videon
 
+  let videoSrc;
+
+  // Skapa video-iframe beroende på typ (YouTube eller Vimeo)
   if (videoType === 'youtube') {
-    // Använd YouTube IFrame API
-    createYouTubePlayer(videoId);
+    videoSrc = `https://www.youtube.com/embed/${videoId}?origin=${window.location.origin}&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0`;
+    
+    // Lägg till iframe i spelarelementet och ett transparent block för att täcka YouTube-loggan
+    playerElement.innerHTML = `
+      <div class="video-container">
+        <iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        <div class="overlay" onclick="openYouTubeExternal('${videoId}')"></div>
+      </div>`;
   } else if (videoType === 'vimeo') {
-    const videoSrc = `https://player.vimeo.com/video/${videoId}?dnt=1&title=0&byline=0&portrait=0`;
-    playerElement.innerHTML = `<iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>`;
+    videoSrc = `https://player.vimeo.com/video/${videoId}?dnt=1&title=0&byline=0&portrait=0`;
+    playerElement.innerHTML = `<iframe src="${videoSrc}" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
   }
 
-  // Plyr-initialisering (för Vimeo)
+  // Plyr-initialisering
   const player = new Plyr('#player iframe', {
     controls: ['play', 'progress', 'volume', 'fullscreen']
   });
@@ -29,33 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Funktion för att skapa en YouTube-spelare med YouTube IFrame API
-function createYouTubePlayer(videoId) {
-  new YT.Player('player', {
-    height: '360',
-    width: '640',
-    videoId: videoId,
-    playerVars: {
-      'modestbranding': 1,  // Minskar YouTube-branding
-      'rel': 0,             // Spela inte relaterade videos efteråt
-      'iv_load_policy': 3,  // Dölj annotations
-      'showinfo': 0
-    },
-    events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
-    }
-  });
-}
-
-// När spelaren är redo
-function onPlayerReady(event) {
-  event.target.playVideo();
-}
-
-// När spelarens tillstånd ändras
-function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.ENDED) {
-    console.log('Video finished playing');
-  }
+// Funktion för att öppna YouTube i en ny flik när användaren klickar på overlay-blocket
+function openYouTubeExternal(videoId) {
+  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  window.open(youtubeUrl, '_blank'); // Öppna i en ny flik eller extern app
 }
