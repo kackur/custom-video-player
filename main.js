@@ -38,8 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Funktion för att öppna YouTube i en ny flik när användaren klickar på overlay-blocket
+// Funktion för att öppna YouTube i en ny flik eller extern app med window.top
 function openYouTubeExternal(videoId) {
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  window.open(youtubeUrl, '_blank'); // Öppna i en ny flik eller extern app
+  
+  // Öppna länken i den översta nivån för att tvinga ut den från iframen
+  window.top.location.href = youtubeUrl;
 }
